@@ -36,7 +36,7 @@ struct Music_WidgetApp: App {
     @State var activeAppBeforeHover: Optional<NSRunningApplication> = nil
     
     /// Window width
-    let windowWidth: CGFloat = 395
+    let windowWidth: CGFloat = 385
     
     /// Window width
     let windowHeight: CGFloat = 100
@@ -245,5 +245,6 @@ struct Music_WidgetApp: App {
         }
         .windowStyle(.hiddenTitleBar)  // No title bar
         .windowResizability(.contentSize)  // Window size cannot be changed
+        .windowToolbarStyle(.unifiedCompact)  // More compact window
     }
 }

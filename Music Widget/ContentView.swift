@@ -13,7 +13,7 @@ import AVFAudio
 
 struct ContentView: View {
     /// Height of the window in which the ContentView is displayed.
-    let windowHeight: CGFloat = 95
+    let windowHeight: CGFloat = 100
     
     /// Instance of MusicModel (Singleton)
     @EnvironmentObject var musicModel: MusicModel
@@ -403,6 +403,7 @@ struct ContentView: View {
                             }
                             .opacity(0.7)
                             .frame(height: 10)
+                            .padding(.trailing, 4)
                         
                         // Player-Position and Duration
                         let position = Track.formatSeconds(Int(sliderValue))
