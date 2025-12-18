@@ -433,6 +433,7 @@ struct ContentView: View {
                                 .padding(.trailing, 5)
                         }
                         .padding(.top, -5)
+                        .padding(.trailing, 10)
                     }
                     .padding(0)
                     .opacity((songDuration == 1) ? 0 : 1.0)

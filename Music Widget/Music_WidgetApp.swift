@@ -35,6 +35,12 @@ struct Music_WidgetApp: App {
     /// App that was active before this one was automatically activated
     @State var activeAppBeforeHover: Optional<NSRunningApplication> = nil
     
+    /// Window width
+    let windowWidth: CGFloat = 395
+    
+    /// Window width
+    let windowHeight: CGFloat = 100
+    
     /// Code to be executed when the app starts
     init() {
         // Nothing happens here, yet
@@ -87,8 +93,15 @@ struct Music_WidgetApp: App {
                 })
             
                 // Frame width and height
-                .frame(minWidth: 365, idealWidth: 365, maxWidth: .infinity,
-                       minHeight: 89, idealHeight: 89, maxHeight: 89)
+                .frame(
+                    // Width
+                    minWidth: windowWidth,
+                   idealWidth: windowWidth,
+                   maxWidth: .infinity,
+                    // Height
+                   minHeight: windowHeight,
+                   idealHeight: windowHeight,
+                   maxHeight: windowHeight)
                 .fixedSize()
             
                 // Environment Objects
