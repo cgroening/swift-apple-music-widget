@@ -1,4 +1,4 @@
-# Music Widget
+# Music Widget for Apple Music (macOS)
 
 Music Widget is a lightweight and always-on-top controller for Apple Music on macOS. Designed to complement your desktop environment, it gives you instant access to playback controls, track details, and library management without switching windows — all in a compact, customizable interface.
 
