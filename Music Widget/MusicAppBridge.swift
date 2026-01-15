@@ -77,7 +77,11 @@ import Cocoa
     func toggleSongRepeat()
     
     /// Saves the artwork of the current track in the Application Support folder
+    /// Deprecated: Use artworkData()
     func saveArtwork() -> NSString
+
+    /// Returns the artwork data directly as NSData
+    func artworkData() -> NSData?
     
     /// Returns a list of playlists marked as favorites
     var favoritedPlaylists: NSString { get }

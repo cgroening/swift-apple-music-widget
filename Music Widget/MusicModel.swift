@@ -51,8 +51,7 @@ class MusicModel: ObservableObject {
     /// Saves the artwork to the disk via AppleScript and creates an Image
     /// instance from this file, which is returned.
     ///
-    /// TODO: Choose a different folder than the Downloads folder
-    /// TODO: Delete the artwork when the app is closed
+    /// Deprecated! Use getArtworkDirectly()
     func getArtworkViaAppleScript() -> Image {
         // Get the path of the Downloads folder and create the "Music Widget"
         // folder if it doesn't exist
@@ -85,6 +84,24 @@ class MusicModel: ObservableObject {
             print("Error loading image : \(error)")
             return Image(systemName: "music.quarternote.3")
         }
+    }
+    
+    /// Returns the artwork directly from the Music app without saving to disk
+    func getArtworkDirectly() -> Image {
+        // Get artwork data directly from the bridge
+        guard let artworkData = musicAppBridge.artworkData() as? Data else {
+            print("No artwork data available")
+            return Image(systemName: "music.quarternote.3")
+        }
+        
+        // Convert NSData to NSImage
+        guard let nsImage = NSImage(data: artworkData) else {
+            print("Could not create image from artwork data")
+            return Image(systemName: "music.quarternote.3")
+        }
+        
+        print("Artwork loaded directly from Music app")
+        return Image(nsImage: nsImage)
     }
     
     /// Player position in seconds
@@ -235,7 +252,8 @@ extension MusicModel {
             }
         } else {
             // Song not in library, try via AppleScript
-            image = self.getArtworkViaAppleScript()
+//            image = self.getArtworkViaAppleScript()  // Deprecated, new is:
+            image = self.getArtworkDirectly() 
         }
         
         return image

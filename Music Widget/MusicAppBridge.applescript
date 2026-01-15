@@ -205,37 +205,53 @@ end tell
 end setLoved:
 
 # Saves the artwork of the current track and returns the path
+# Deprecated! Use artworkData()
 to saveArtwork() -- () -> NSString
 # Get raw image data
-tell application id "com.apple.Music" to tell artwork 1 of current track
-set srcBytes to raw data
+    tell application id "com.apple.Music" to tell artwork 1 of current track
+        set srcBytes to raw data
 
-# Determine file extension (.png or .jpg)
-if format is «class PNG » then
-    set ext to ".png"
-    else
-    set ext to ".jpg"
-end if
-end tell
+        # Determine file extension (.png or .jpg)
+        if format is «class PNG » then
+            set ext to ".png"
+            else
+            set ext to ".jpg"
+        end if
+    end tell
 
-# Set file name ([Downloads folder]/Music Widget/music_cover.ext)
-set fileName to POSIX path of ((((path to downloads folder ¬
-from user domain) as text) & "Music Widget:" as text) ¬
-& "music_cover" & ext)
+    # Set file name ([Downloads folder]/Music Widget/music_cover.ext)
+    set fileName to POSIX path of ((((path to downloads folder ¬
+    from user domain) as text) & "Music Widget:" as text) ¬
+    & "music_cover" & ext)
 
-# Begin file access
-set outFile to open for access fileName with write permission
+    # Begin file access
+    set outFile to open for access fileName with write permission
 
-# Truncate file
-set eof outFile to 0
+    # Truncate file
+    set eof outFile to 0
 
-# Write file
-write srcBytes to outFile
+    # Write file
+    write srcBytes to outFile
 
-# End file access
-close access outFile
+    # End file access
+    close access outFile
 
-return fileName
+    return fileName
 end saveArtwork
+
+# Returns the artwork as raw NSData without saving to disk
+to artworkData() -- () -> NSData
+tell application id "com.apple.Music"
+    try
+        # Get the raw image data from the current track's artwork
+        tell artwork 1 of current track
+            return raw data
+        end tell
+        on error
+        # If no artwork is available, return missing value
+        return missing value
+    end try
+end tell
+end artworkData
 
 end script
