@@ -9,8 +9,8 @@
   - It's caused by timers: This becomes clear when changing from 1 and 2 seconds to 10 and 20.  
   - SlidingText is no longer used. The timer required for it consumes too much power.  
   - Timer for slider changed from 1s to 5s
-- [ ] Buttons for Repeat/Shuffle
-- [ ] Display play count, last played, and date added  
+- [x] Buttons for Repeat/Shuffle
+- [x] Display play count, last played, and date added  
 
 ## Pending 🔧
 - [ ] State reason for requiring access to the Downloads folder
