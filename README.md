@@ -11,6 +11,7 @@ Music Widget is a lightweight and always-on-top controller for Apple Music on ma
 - 🎧 Always-on-top mini player for Apple Music
 - ⏯ Playback controls: play, pause, skip
 - ⭐ Mark songs as favorites and set star ratings
+- ⌨️ Keyboard shortcuts for quick control without switching focus
 - 🖼 Display album cover and track info
 - 📊 View play count, last played, and added date
 - 🔁 Shuffle and repeat toggle
