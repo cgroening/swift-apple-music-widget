@@ -44,6 +44,23 @@ open MusicWidget.xcodeproj
 
 ---
 
+## ⌨️ Keyboard shortcuts
+
+- F1: Set star rating to 1
+- F2: Set star rating to 2
+- F3: Set star rating to 3
+- F4: Set star rating to 4
+- F5: Set star rating to 5
+- F6: Toggle Loved (Favorite)
+- F7: Previous Track
+- F8: Play/Pause
+- F9: Next Track
+- F10: Toggle Mute
+- F11: Volume Down
+- F12: Volume Up
+
+---
+
 ## 🙌 Acknowledgements
 
 - Built using Swift and AppKit.
