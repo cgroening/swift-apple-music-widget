@@ -64,27 +64,47 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 switch event.keyCode {
                     case 122: // F1 - Set rating to 1
                         Task { @MainActor in
-                            self.musicModel.setRating(rating: 1)
+                            if self.musicModel.trackInfo.rating != 1 {
+                                self.musicModel.setRating(rating: 1)
+                            } else {
+                                self.musicModel.setRating(rating: 0)
+                            }
                         }
                         return nil
                     case 120: // F2 - Set rating to 2
                         Task { @MainActor in
-                            self.musicModel.setRating(rating: 2)
+                            if self.musicModel.trackInfo.rating != 2 {
+                                self.musicModel.setRating(rating: 2)
+                            } else {
+                                self.musicModel.setRating(rating: 0)
+                            }
                         }
                         return nil
                     case 99:  // F3 - Set rating to 3
                         Task { @MainActor in
-                            self.musicModel.setRating(rating: 3)
+                            if self.musicModel.trackInfo.rating != 3 {
+                                self.musicModel.setRating(rating: 3)
+                            } else {
+                                self.musicModel.setRating(rating: 0)
+                            }
                         }
                         return nil
                     case 118: // F4 - Set rating to 4
                         Task { @MainActor in
-                            self.musicModel.setRating(rating: 4)
+                            if self.musicModel.trackInfo.rating != 4 {
+                                self.musicModel.setRating(rating: 4)
+                            } else {
+                                self.musicModel.setRating(rating: 0)
+                            }
                         }
                         return nil
                     case 96:  // F5 - Set rating to 5
                         Task { @MainActor in
-                            self.musicModel.setRating(rating: 5)
+                            if self.musicModel.trackInfo.rating != 5 {
+                                self.musicModel.setRating(rating: 5)
+                            } else {
+                                self.musicModel.setRating(rating: 0)
+                            }
                         }
                         return nil
                     case 97:  // F6 - Toggle loved/favorite
