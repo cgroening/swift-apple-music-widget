@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-
+@MainActor
 class AppDelegate: NSObject, NSApplicationDelegate {
     /// Shared instance of the MusicModel
     let musicModel: MusicModel = .shared
