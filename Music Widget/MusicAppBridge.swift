@@ -12,6 +12,7 @@ import Cocoa
 /// ASOC does not bridge C data types, only Cocoa classes and objects,
 /// i.e., the Swift data types Bool/Int/Double must be explicitly
 /// converted to/from NSNumber when communicating with AppleScript.
+@MainActor
 @objc(NSObject) protocol MusicAppBridge {
     /// Indicates whether the Music app is running (Bool)
     var _isRunning: NSNumber { get }
@@ -102,7 +103,11 @@ extension MusicAppBridge {
     /// Player state (unknown stopped, playing, paused, fast forwarding
     /// or rewinding)
     var playerState: PlayerState {
-        return PlayerState(rawValue: self._playerState as! Int)!
+        guard let raw = self._playerState as? Int,
+              let state = PlayerState(rawValue: raw) else {
+            return .unknown
+        }
+        return state
     }
 }
 

@@ -710,6 +710,9 @@ struct CustomSlider: View {
     /// The maximum value of the slider - usually song duration
     private var maxValue: CGFloat
     
+    /// Safe maximum value to prevent division by zero
+    private var safeMax: CGFloat
+    
     /// Radius of the thumb which is the red circle
     private let thumbRadius: CGFloat = 12
     
@@ -718,6 +721,7 @@ struct CustomSlider: View {
         self._value = value
         self.minValue = 0
         self.maxValue = maxValue
+        self.safeMax = max(maxValue, 1)
     }
     var body: some View {
         GeometryReader{ geometry in
@@ -737,7 +741,7 @@ struct CustomSlider: View {
                     )
                     .frame(
                         width: geometry.size.width
-                                   * (CGFloat(value) / CGFloat(maxValue))
+                                   * (CGFloat(value) / CGFloat(safeMax))
                     )
                     .contentShape(.capsule)
                     .frame(maxWidth: .infinity, alignment: .leading)

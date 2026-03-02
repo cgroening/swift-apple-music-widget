@@ -42,24 +42,20 @@ extension Track {
         df.dateFormat = "dd MMM yy"
         
         // Retrieve values from AppleScript
-        self.artist = dictionary.value(forKey: "trackArtist") as! String
-        self.album = dictionary.value(forKey: "trackAlbum") as! String
-        self.name = dictionary.value(forKey: "trackName") as! String
-        self.trackNumber = dictionary.value(forKey: "trackNumber") as! Int
+        self.artist = dictionary["trackArtist"] as? String ?? ""
+        self.album = dictionary["trackAlbum"] as? String ?? ""
+        self.name = dictionary["trackName"] as? String ?? ""
+        self.trackNumber = dictionary["trackNumber"] as? Int ?? 0
         
-        if dictionary["trackDuration"] is NSNull {
-            self.duration = 0
+        if let duration = dictionary["trackDuration"] as? Double {
+            self.duration = Int(duration)
+            self.durationFormatted = Track.formatSeconds(Int(duration))
         } else {
-            self.duration = Int(
-                dictionary.value(forKey: "trackDuration") as! Double
-            )
-            self.durationFormatted = Track.formatSeconds(Int(
-                truncating: dictionary.value(forKey: "trackDuration")
-                as! NSNumber
-            ))
+            self.duration = 0
+            self.durationFormatted = ""
         }
         
-        self.loved = dictionary.value(forKey: "trackLoved") as! Bool
+        self.loved = dictionary["trackLoved"] as? Bool ?? false
         
         // If the song is not in the library, the following values
         // might not be available
@@ -90,7 +86,11 @@ extension Track {
         // The track's rating is stored in the library as a percentage (0-100).
         // The UI, however, offers 0-5 stars.
         // Therefore, the value is divided by 20 (e.g. 100/5=20).
-        self.rating = (dictionary.value(forKey: "trackRating") as! Int) / 20
+        if let rating = dictionary["trackRating"] as? Int {
+            self.rating = rating / 20
+        } else {
+            self.rating = 0
+        }
     }
 }
 

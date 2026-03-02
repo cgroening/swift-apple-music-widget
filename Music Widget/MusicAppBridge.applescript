@@ -174,14 +174,18 @@ end trackInfo
 # Indicates whether the track is in the library (1) or from Apple Music (0)
 to trackInLibrary() -- () -> NSNumber (Bool)
 tell application id "com.apple.Music"
-    set cls to class of current track
-    if cls is URL track then
+    try
+        set cls to class of current track
+        if cls is URL track then
+            return 0
+            else
+            return 1
+        end if
+        on error
         return 0
-        else
-        return 1
-    end if
+    end try
 end tell
-end trackDuration
+end trackInLibrary
 
 # Track duration for slider (workaround)
 to trackDuration() -- () -> NSNumber (Double, >= 0)
