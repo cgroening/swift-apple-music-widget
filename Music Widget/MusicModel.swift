@@ -96,18 +96,22 @@ class MusicModel: ObservableObject {
     
     /// Returns the artwork directly from the Music app without saving to disk
     func getArtworkDirectly() -> Image {
-        // Get artwork data directly from the bridge
-        guard let artworkData = musicAppBridge.artworkData() as? Data else {
+        // Get artwork data directly from the bridge.
+        // ASOC returns NSAppleEventDescriptor (not nil) for AppleScript's
+        // "missing value", so we must check the actual runtime type before
+        // bridging to Data — otherwise NSData bridging calls `length` on the
+        // descriptor and crashes.
+        let rawResult = musicAppBridge.artworkData()
+        guard let rawResult, (rawResult as AnyObject).isKind(of: NSData.self) else {
             print("No artwork data available")
             return Image(systemName: "music.quarternote.3")
         }
-        
-        // Convert NSData to NSImage
-        guard let nsImage = NSImage(data: artworkData) else {
+
+        guard let nsImage = NSImage(data: rawResult as Data) else {
             print("Could not create image from artwork data")
             return Image(systemName: "music.quarternote.3")
         }
-        
+
         print("Artwork loaded directly from Music app")
         return Image(nsImage: nsImage)
     }

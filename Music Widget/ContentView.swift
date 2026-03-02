@@ -780,12 +780,6 @@ struct CustomSlider: View {
                             .onChanged({ gesture in
                                 updateSliderValue(with: gesture, in: geometry)
                                 
-                                // Only change the player position if the change
-                                // is greater than 5%. This avoids the jerky
-                                // sound playback when pressing the mouse button
-                                let plPos = musicModel.musicAppBridge
-                                                .playerPosition
-                                
                                 musicModel.musicAppBridge.playerPosition =
                                     NSNumber(value: value)
                             })
