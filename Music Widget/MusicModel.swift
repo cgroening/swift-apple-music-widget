@@ -41,8 +41,15 @@ class MusicModel: ObservableObject {
         Bundle.main.loadAppleScriptObjectiveCScripts()
         
         // Create an instance of MusicAppBridge
-        let musicAppBridgeClass: AnyClass = NSClassFromString("MusicAppBridge")!
-        self.musicAppBridge = musicAppBridgeClass.alloc() as! MusicAppBridge
+        guard let musicAppBridgeClass = NSClassFromString("MusicAppBridge") as? NSObject.Type else {
+            fatalError("MusicAppBridge class not found")
+        }
+        
+        guard let bridge = musicAppBridgeClass.init() as? MusicAppBridge else {
+            fatalError("Could not instantiate MusicAppBridge")
+        }
+        
+        self.musicAppBridge = bridge
         
         // Read the music library
         self.musicSongs = self.getMusicSongs()
@@ -132,6 +139,15 @@ class MusicModel: ObservableObject {
         }
     }
     
+    /// Returns the progress of the current track in percent
+    func currentTrackProgress() -> Double {
+        let duration = trackInfo.duration
+        guard duration > 0 else { return 0 }
+        
+        let position = Double(truncating: musicAppBridge.playerPosition)
+        return min(max(position / Double(duration), 0), 1)
+    }
+    
     func getFavoritedPlaylists() -> String {
         return String(describing: musicAppBridge.favoritedPlaylists)
     }
@@ -180,9 +196,9 @@ extension MusicModel {
         } else {
             Task { @MainActor in
                 // Get the status of the Music app and track info
-                musicState.status = MusicState.PlayerState(
-                    rawValue: musicAppBridge._playerState as? Int ?? 0
-                )!
+                let raw = musicAppBridge._playerState as? Int ?? 0
+                musicState.status = MusicState.PlayerState(rawValue: raw) ?? .unknown
+                
                 musicState.volume = musicAppBridge.soundVolume.doubleValue
                 getTrackInfo()
                 VolumeSliderData.shared.sliderValue = musicState.volume

@@ -255,12 +255,18 @@ struct ContentView: View {
                                 Color(red: 0, green: 0.5, blue: 0) : .primary
                         )
                         .onAppear{
-                            self.shuffleEnabled = self.musicModel.musicAppBridge
-                                                      .shuffleEnabled as! Bool
+                            if let shuffle = self.musicModel.musicAppBridge.shuffleEnabled as? Bool {
+                                self.shuffleEnabled = shuffle
+                            } else {
+                                self.shuffleEnabled = false
+                            }
                         }
                         .onReceive(timers.$second) { _ in
-                            self.shuffleEnabled = self.musicModel.musicAppBridge
-                                                      .shuffleEnabled as! Bool
+                            if let shuffle = self.musicModel.musicAppBridge.shuffleEnabled as? Bool {
+                                self.shuffleEnabled = shuffle
+                            } else {
+                                self.shuffleEnabled = false
+                            }
                         }
                         //                    .padding([.top], -15)
                         
@@ -540,9 +546,7 @@ struct RatingButton: View {
         }
         .onReceive(timer) { _ in
             // Determine track progress
-            let trackProgess: Double =
-            Double(truncating: MusicModel.shared.musicAppBridge.playerPosition)
-            / Double(MusicModel.shared.trackInfo.duration)
+            let trackProgress = MusicModel.shared.currentTrackProgress()
             
             // Skip the first timer step (have to wait
             // until MusicModel.shared.trackInfo.rating is set, otherwise
@@ -552,7 +556,7 @@ struct RatingButton: View {
             } else {
                 // Should the button flash?
                 if MusicModel.shared.trackInfo.rating == 0  // no rating?
-                    && trackProgess >= 0.8  // Track progress >= 80%
+                    && trackProgress >= 0.8  // Track progress >= 80%
                     && !songNotRatedWarningDisabled {
                     self.showWarningColor.toggle()
                     
