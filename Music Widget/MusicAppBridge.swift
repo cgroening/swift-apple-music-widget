@@ -103,8 +103,8 @@ extension MusicAppBridge {
     /// Player state (unknown stopped, playing, paused, fast forwarding
     /// or rewinding)
     var playerState: PlayerState {
-        guard let raw = self._playerState as? Int,
-              let state = PlayerState(rawValue: raw) else {
+        let raw = self._playerState.intValue
+        guard let state = PlayerState(rawValue: raw) else {
             return .unknown
         }
         return state

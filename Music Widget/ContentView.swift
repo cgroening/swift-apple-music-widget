@@ -255,18 +255,12 @@ struct ContentView: View {
                                 Color(red: 0, green: 0.5, blue: 0) : .primary
                         )
                         .onAppear{
-                            if let shuffle = self.musicModel.musicAppBridge.shuffleEnabled as? Bool {
-                                self.shuffleEnabled = shuffle
-                            } else {
-                                self.shuffleEnabled = false
-                            }
+                            self.shuffleEnabled = self.musicModel.musicAppBridge
+                                .shuffleEnabled.boolValue
                         }
                         .onReceive(timers.$second) { _ in
-                            if let shuffle = self.musicModel.musicAppBridge.shuffleEnabled as? Bool {
-                                self.shuffleEnabled = shuffle
-                            } else {
-                                self.shuffleEnabled = false
-                            }
+                            self.shuffleEnabled = self.musicModel.musicAppBridge
+                                .shuffleEnabled.boolValue
                         }
                         //                    .padding([.top], -15)
                         

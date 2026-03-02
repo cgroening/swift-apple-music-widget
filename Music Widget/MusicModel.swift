@@ -97,18 +97,35 @@ class MusicModel: ObservableObject {
     /// Returns the artwork directly from the Music app without saving to disk
     func getArtworkDirectly() -> Image {
         // Get artwork data directly from the bridge.
-        // ASOC returns NSAppleEventDescriptor (not nil) for AppleScript's
-        // "missing value", so we must check the actual runtime type before
-        // bridging to Data — otherwise NSData bridging calls `length` on the
-        // descriptor and crashes.
-        let rawResult = musicAppBridge.artworkData()
-        guard let rawResult, (rawResult as AnyObject).isKind(of: NSData.self) else {
+        // ASOC always bridges AppleScript's 'raw data' type as
+        // NSAppleEventDescriptor — never as NSData — so we must extract the
+        // image bytes from the descriptor's .data property.
+        // When there is no artwork, AppleScript returns 'missing value', which
+        // also arrives as NSAppleEventDescriptor (not nil), so we guard against
+        // that by attempting to create an NSImage and checking it succeeds.
+        guard let rawResult = musicAppBridge.artworkData() else {
             print("No artwork data available")
             return Image(systemName: "music.quarternote.3")
         }
 
-        guard let nsImage = NSImage(data: rawResult as Data) else {
-            print("Could not create image from artwork data")
+        let obj = rawResult as AnyObject
+        let imageData: Data
+
+        if obj.isKind(of: NSData.self) {
+            // Actual NSData (future-proof, should not occur via ASOC today)
+            imageData = rawResult as Data
+        } else if let descriptor = obj as? NSAppleEventDescriptor {
+            // Normal ASOC path: 'raw data' and 'missing value' both arrive here.
+            // .data extracts the raw bytes; NSImage init will fail gracefully
+            // if the descriptor represents 'missing value' (no artwork).
+            imageData = descriptor.data
+        } else {
+            print("No artwork data available")
+            return Image(systemName: "music.quarternote.3")
+        }
+
+        guard let nsImage = NSImage(data: imageData) else {
+            print("No artwork data available")
             return Image(systemName: "music.quarternote.3")
         }
 
@@ -201,7 +218,7 @@ extension MusicModel {
         } else {
             Task { @MainActor in
                 // Get the status of the Music app and track info
-                let raw = musicAppBridge._playerState as? Int ?? 0
+                let raw = musicAppBridge._playerState.intValue
                 musicState.status = MusicState.PlayerState(rawValue: raw) ?? .unknown
                 
                 musicState.volume = musicAppBridge.soundVolume.doubleValue
