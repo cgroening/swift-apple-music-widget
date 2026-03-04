@@ -51,7 +51,7 @@ Music Widget is a lightweight and always-on-top controller for Apple Music on ma
 
 ### Build from Source
 
-```bash
+```zsh
 git clone https://github.com/cgroening/AppleMusicWidget.git
 cd music-widget
 open MusicWidget.xcodeproj
@@ -108,7 +108,7 @@ To avoid Gatekeeper warnings on other Macs:
    - Select your Team and let Xcode manage signing
 3. Build or archive again with signing enabled.
 4. Upload the signed build for notarization via Xcode or the altool/notarytool CLI.
-5. Once notarized, you’ll get a stapled app that can open cleanly on most systems.
+5. Once notarized, you'll get a stapled app that can be opened.
 
 Signed & notarized builds are ideal if you plan to distribute widely.
 
