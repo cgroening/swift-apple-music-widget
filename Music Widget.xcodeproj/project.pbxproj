@@ -11,7 +11,6 @@
 		B74305F52872E7EC00890443 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74305F42872E7EC00890443 /* ContentView.swift */; };
 		B74305F72872E7ED00890443 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B74305F62872E7ED00890443 /* Assets.xcassets */; };
 		B74305FA2872E7ED00890443 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B74305F92872E7ED00890443 /* Preview Assets.xcassets */; };
-		B74306032872E9FB00890443 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B74306022872E9FB00890443 /* AppleScriptObjC.framework */; };
 		B74306052872EAAF00890443 /* MusicAppBridge.applescript in Sources */ = {isa = PBXBuildFile; fileRef = B74306042872EAAF00890443 /* MusicAppBridge.applescript */; };
 		B74306092872ED5A00890443 /* MusicAppBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74306082872ED5A00890443 /* MusicAppBridge.swift */; };
 		B743060F2873573D00890443 /* MusicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B743060E2873573D00890443 /* MusicModel.swift */; };
@@ -19,6 +18,7 @@
 		B7AE63AA287429F60073A4DF /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AE63A9287429F60073A4DF /* Track.swift */; };
 		B7AE63B1287434E70073A4DF /* MusicState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AE63B0287434E70073A4DF /* MusicState.swift */; };
 		B7AE63B5287438570073A4DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AE63B4287438570073A4DF /* AppDelegate.swift */; };
+		B7E6EEDD2F5848E800286CF3 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B74306022872E9FB00890443 /* AppleScriptObjC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,7 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B74306032872E9FB00890443 /* AppleScriptObjC.framework in Frameworks */,
+				B7E6EEDD2F5848E800286CF3 /* AppleScriptObjC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,12 +347,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				AUTOMATION_APPLE_EVENTS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Music Widget/Music_Widget.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Music Widget/Preview Content\"";
+				DEVELOPMENT_TEAM = YASJ5FU5X8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readwrite;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -360,16 +361,19 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Info.plist;
-				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Required to control the Music App.";
+				INFOPLIST_KEY_CFBundleDisplayName = "Music Widget";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Required to read current song info and control the Music App.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "groening.dev.Music-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -382,12 +386,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				AUTOMATION_APPLE_EVENTS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Music Widget/Music_Widget.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Music Widget/Preview Content\"";
+				DEVELOPMENT_TEAM = YASJ5FU5X8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_FILE_ACCESS_DOWNLOADS_FOLDER = readwrite;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -395,16 +400,19 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Info.plist;
-				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Required to control the Music App.";
+				INFOPLIST_KEY_CFBundleDisplayName = "Music Widget";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Required to read current song info and control the Music App.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "groening.dev.Music-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};

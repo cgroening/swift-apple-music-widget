@@ -110,6 +110,9 @@ To avoid Gatekeeper warnings on other Macs:
 4. Upload the signed build for notarization via Xcode or the altool/notarytool CLI.
 5. Once notarized, you'll get a stapled app that can be opened.
 
+Follow this guide for a more detailed description:
+
+[Notarizing macOS software before distribution | Apple Developer Documentation](https://developer.apple.com/documentation/security/notarizing-macos-software-before-distribution)
 Signed & notarized builds are ideal if you plan to distribute widely.
 
 ---
