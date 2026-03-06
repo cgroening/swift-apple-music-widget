@@ -245,17 +245,17 @@ end saveArtwork
 
 # Returns the artwork as raw NSData without saving to disk
 to artworkData() -- () -> NSData
-tell application id "com.apple.Music"
-    try
-        # Get the raw image data from the current track's artwork
-        tell artwork 1 of current track
-            return raw data
-        end tell
-        on error
-        # If no artwork is available, return missing value
-        return missing value
-    end try
-end tell
+    tell application id "com.apple.Music"
+        try
+            # Get the raw image data from the current track's artwork
+            tell artwork 1 of current track
+                return raw data
+            end tell
+            on error
+            # If no artwork is available, return missing value
+            return missing value
+        end try
+    end tell
 end artworkData
 
 end script
