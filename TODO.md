@@ -11,9 +11,8 @@
   - Timer for slider changed from 1s to 5s
 - [x] Buttons for Repeat/Shuffle
 - [x] Display play count, last played, and date added  
+- [x] Save album cover to clipboard only
 
 ## Pending 🔧
-- [ ] State reason for requiring access to the Downloads folder
-- [ ] Save album cover to clipboard only
 - [ ] Add current track to playlist
 - [ ] Add "+" button in top right to add track to library
