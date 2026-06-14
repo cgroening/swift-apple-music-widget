@@ -19,43 +19,43 @@ import Combine
 class MusicModel: ObservableObject {
     /// Singleton: Instance of this class (constructor must be private)
     static let shared = MusicModel()
-    
+
     /// Instance of MusicAppBridge for communication with the Music app
     var musicAppBridge: MusicAppBridge
-    
+
     /// Instance of the music library
     var musicSongs: [ITLibMediaItem] = []
-    
+
     /// Status of the Music app or player
     @Published var musicState = MusicState()
-    
+
     /// Information about a track (artist, title, etc.)
     @Published var trackInfo = Track()
-    
+
     /// Indicates whether the song is in the library or retrieved
     /// via Apple Music
     @Published var songInLibrary = false
-    
+
     /// Instantiate MusicAppBridge and set up observers
     private init() {
         // Load the AppleScript Objective-C scripts
         Bundle.main.loadAppleScriptObjectiveCScripts()
-        
+
         // Create an instance of MusicAppBridge
         guard let musicAppBridgeClass = NSClassFromString("MusicAppBridge") as? NSObject.Type else {
             fatalError("MusicAppBridge class not found")
         }
-        
+
         guard let bridge = musicAppBridgeClass.init() as? MusicAppBridge else {
             fatalError("Could not instantiate MusicAppBridge")
         }
-        
+
         self.musicAppBridge = bridge
-        
+
         // Read the music library
         self.musicSongs = self.getMusicSongs()
     }
-    
+
     /// Saves the artwork to the disk via AppleScript and creates an Image
     /// instance from this file, which is returned.
     ///
@@ -67,7 +67,7 @@ class MusicModel: ObservableObject {
             for: .downloadsDirectory, in: .userDomainMask).first!
         let downloadsDirectoryWithFolder = downloadsDirectory
             .appendingPathComponent("Music Widget")
-        
+
         do {
             try FileManager.default.createDirectory(
                 at: downloadsDirectoryWithFolder,
@@ -76,15 +76,15 @@ class MusicModel: ObservableObject {
         } catch let error as NSError {
             print(error.localizedDescription)
         }
-        
+
         // Save artwork via AppleScript
         _ = musicAppBridge.saveArtwork()
         print("Artwork saved")
-        
+
         // Read the JPEG file of the cover and return an Image instance
         let imgUrl = downloadsDirectoryWithFolder
             .appendingPathComponent("music_cover.jpg")
-        
+
         do {
             let imageData = try Data(contentsOf: imgUrl)
             return Image(nsImage: NSImage(data: imageData) ?? NSImage())
@@ -93,12 +93,12 @@ class MusicModel: ObservableObject {
             return Image(systemName: "music.quarternote.3")
         }
     }
-    
+
     /// Returns the artwork directly from the Music app without saving to disk
     func getArtworkDirectly() -> Image {
         // Get artwork data directly from the bridge.
         // ASOC always bridges AppleScript's 'raw data' type as
-        // NSAppleEventDescriptor — never as NSData — so we must extract the
+        // NSAppleEventDescriptor - never as NSData - so we must extract the
         // image bytes from the descriptor's .data property.
         // When there is no artwork, AppleScript returns 'missing value', which
         // also arrives as NSAppleEventDescriptor (not nil), so we guard against
@@ -132,12 +132,12 @@ class MusicModel: ObservableObject {
         print("Artwork loaded directly from Music app")
         return Image(nsImage: nsImage)
     }
-    
+
     /// Player position in seconds
     func getPlayerPosition() -> Int {
         return Int(truncating: self.musicAppBridge.playerPosition)
     }
-    
+
     /// Class of the track ("shared track" or "URL track")
     func getTrackInLibrary() -> Bool {
         if self.musicAppBridge.trackInLibrary == 1 {
@@ -146,11 +146,11 @@ class MusicModel: ObservableObject {
             return false
         }
     }
-    
+
     /// Returns the song duration (workaround for SwiftUI slider).
     func getDuration() -> Int {
         // Check if the song duration can be read, if not return 1
-        
+
         // Check if the player is stopped
         if musicState.status == .unknown || musicState.status == .stopped {
             // If the player is stopped, return the value 1
@@ -160,20 +160,20 @@ class MusicModel: ObservableObject {
             return Int(truncating: musicAppBridge.trackDuration)
         }
     }
-    
+
     /// Returns the progress of the current track in percent
     func currentTrackProgress() -> Double {
         let duration = trackInfo.duration
         guard duration > 0 else { return 0 }
-        
+
         let position = Double(truncating: musicAppBridge.playerPosition)
         return min(max(position / Double(duration), 0), 1)
     }
-    
+
     func getFavoritedPlaylists() -> String {
         return String(describing: musicAppBridge.favoritedPlaylists)
     }
-    
+
     func getTestTest() -> Int {
         return Int(truncating: musicAppBridge.testTest)
     }
@@ -184,7 +184,7 @@ extension MusicModel {
     func getMusicSongs() -> [ITLibMediaItem] {
         musicSongs = []
         let iTunesLibrary: ITLibrary
-        
+
         // Read the library
         do {
             iTunesLibrary = try ITLibrary(apiVersion: "1.0")
@@ -192,11 +192,11 @@ extension MusicModel {
             print("ERROR: The music library could not be read.")
             return [ITLibMediaItem]()
         }
-        
+
         // Save songs
         let songs = iTunesLibrary.allMediaItems
         print("\(songs.count) songs were found.")
-        
+
         return songs
     }
 }
@@ -220,7 +220,7 @@ extension MusicModel {
                 // Get the status of the Music app and track info
                 let raw = musicAppBridge._playerState.intValue
                 musicState.status = MusicState.PlayerState(rawValue: raw) ?? .unknown
-                
+
                 musicState.volume = musicAppBridge.soundVolume.doubleValue
                 getTrackInfo()
                 VolumeSliderData.shared.sliderValue = musicState.volume
@@ -234,14 +234,14 @@ extension MusicModel {
     @MainActor func getTrackInfo() {
         let bridge = musicAppBridge
         var track = Track()
-        
+
         if bridge.isRunning, let info = bridge.trackInfo as NSDictionary? {
             track = Track(dictionary: info)
             track.cover = getArtwork(track: track)
         }
-        
+
         trackInfo = track
-        
+
         // Check if the song is in the library (needed to disable star ratings)
         if self.musicAppBridge.trackInLibrary == 1 {
             self.songInLibrary = true
@@ -249,7 +249,7 @@ extension MusicModel {
             self.songInLibrary = false
         }
     }
-    
+
     /// Updates the track info in case favorite or stars were changed.
     ///
     /// TODO: Only update favorite and stars, not all data (implement update
@@ -257,15 +257,15 @@ extension MusicModel {
     func updatedLovedAndRating() {
         let bridge = musicAppBridge
         var track_updated = Track()
-        
+
         if bridge.isRunning, let info = bridge.trackInfo as NSDictionary? {
             track_updated = Track(dictionary: info)
         }
-        
+
         trackInfo.loved = track_updated.loved
         trackInfo.rating = track_updated.rating
     }
-    
+
     /// Returns the cover image (artwork) of the current track
     ///
     /// - Note: First, it tries to load the cover from the music library.
@@ -275,7 +275,7 @@ extension MusicModel {
     /// to pass the cover via MusicAppBridge.
     func getArtwork(track: Track) -> Image {
         var image = Image(systemName: "music.quarternote.3")
-        
+
         if let match = musicSongs.first(where: {
             $0.title == track.name  &&
             $0.album.title == track.album &&
@@ -291,9 +291,9 @@ extension MusicModel {
         } else {
             // Song not in library, try via AppleScript
 //            image = self.getArtworkViaAppleScript()  // Deprecated, new is:
-            image = self.getArtworkDirectly() 
+            image = self.getArtworkDirectly()
         }
-        
+
         return image
     }
 }
@@ -301,9 +301,9 @@ extension MusicModel {
 final class VolumeSliderData: ObservableObject {
     /// Singleton: Instance of this class (constructor must be private)
     static let shared = VolumeSliderData()
-    
+
     var firstUse: Bool = true
-    
+
     let didChange = PassthroughSubject<VolumeSliderData,Never>()
     @Published var sliderValue: Double = 0 {
         willSet {
@@ -317,7 +317,7 @@ final class VolumeSliderData: ObservableObject {
             firstUse = false
         }
     }
-    
+
     private init() { }
 }
 
@@ -326,11 +326,11 @@ extension MusicModel {
     @MainActor func toggleLoved() {
         // Change the loved status in the Music app
         musicAppBridge.loved = trackInfo.loved ? 0 : 1
-        
+
         // Adjust trackInfo so that the SwiftUI display changes
         trackInfo.loved.toggle()
     }
-    
+
     /// Sets the rating of a track
     /// - Parameter rating: Rating between 0 and 5
     @MainActor func setRating(rating: Int) {
