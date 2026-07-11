@@ -92,8 +92,7 @@ For more polished output:
 1. In Xcode, choose: Product → Archive
 2. Xcode Organizer opens with your archive.
 3. Click Distribute App.
-4. Choose Export → Copy App (or similar option)
-   This produces an exported .app bundle you can share.
+4. Choose Export → Copy App (or similar option) This produces an exported .app bundle you can share.
 5. Optionally compress it (`.zip`) before uploading or sending.
 
 This method packages the app cleanly and is generally preferred over copying the raw build folder.
@@ -112,8 +111,7 @@ To avoid Gatekeeper warnings on other Macs:
 
 Follow this guide for a more detailed description:
 
-[Notarizing macOS software before distribution | Apple Developer Documentation](https://developer.apple.com/documentation/security/notarizing-macos-software-before-distribution)
-Signed & notarized builds are ideal if you plan to distribute widely.
+[Notarizing macOS software before distribution | Apple Developer Documentation](https://developer.apple.com/documentation/security/notarizing-macos-software-before-distribution) Signed & notarized builds are ideal if you plan to distribute widely.
 
 ---
 
